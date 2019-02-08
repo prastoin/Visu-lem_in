@@ -6,17 +6,17 @@
 #    By: prastoin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/07 11:13:09 by prastoin          #+#    #+#              #
-#    Updated: 2019/02/08 21:02:14 by prastoin         ###   ########.fr        #
+#    Updated: 2019/02/08 23:35:22 by fbecerri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = Visu_lem_in
 
-SRC = main.c parser.c data.c init.c
+SRC = main.c tools.c init.c
 
 OBJ = $(SRC:.c=.o)
 
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -g -fsanitize=address
 
 LIB = libft/libft.a
 

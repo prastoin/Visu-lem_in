@@ -6,11 +6,70 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/08 21:40:48 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/08 23:57:22 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visu.h"
+
+
+static int		ft_tracertrait(t_data *data, int x, int y)
+{
+	const int	x_inc = data->xstart < x ? 1 : -1;
+	const int	y_inc = data->ystart < y ? 1 : -1;
+	const int	dx = x > data->xstart ? x - data->xstart : data->xstart - x;
+	const int	dy = y > data->ystart ? y - data->ystart : data->ystart - y;
+	int			e[2];
+
+	e[0] = dx > dy ? dx / 2 : -dy / 2;
+	while (data->xstart != x || data->ystart != y)
+	{
+		if (data->ystart >= 0 && data->ystart < SCREEN_Y &&
+				y < SCREEN_Y && y >= 0 && data->xstart >= 0 &&
+				data->xstart < SCREEN_X && x < SCREEN_X && x > 0)
+			data->img_ptr4[data->ystart * SCREEN_X + data->xstart] = 0xFFFFFF;
+		if ((e[1] = e[0]) > -dx)
+		{
+			e[0] -= dy;
+			data->xstart += x_inc;
+		}
+		if (e[1] < dy)
+		{
+			e[0] += dx;
+			data->ystart += y_inc;
+		}
+	}
+	return (0);
+}
+
+int	deal_key(int key, t_data *data)
+{
+	/*	if (key == KEY_CTRL)
+		fdf->isoparr = (fdf->isoparr == 1 ? 0 : 1);
+		if (key == KEY_LESS)
+		fdf->zoom -= 5;
+		if (key == KEY_PLUS)
+		fdf->zoom += 5;
+		if (key == KEY_UP)
+		fdf->position_y += 15;
+		if (key == KEY_DOWN)
+		fdf->position_y -= 15;
+		if (key == KEY_RIGHT)
+		fdf->position_x += 15;
+		if (key == KEY_LEFT)
+		fdf->position_x -= 15;
+		if (key == KEY_NUM6)
+		fdf->hauteur++;
+		if (key == KEY_NUM3)
+		fdf->hauteur--;
+		mlx_destroy_image(fdf->mlx, fdf->img); */
+	//	algo(fdf, fdf->ab, fdf->ord);
+	if (key == KEY_SPACE)
+		exit (0);
+	(void)data;
+	return (0);
+}
+
 
 char		*ft_reading(void)
 {
@@ -38,166 +97,59 @@ char		**ft_read(void)
 	char	*str;
 	char	**map;
 
-	str = ft_reading();
+	if (!(str = ft_reading()))
+		return (NULL);
 	if (!(map = ft_strsplit(str, '\n')))
 		return (NULL);
 	return (map);
 }
 
-int		ft_nbr_c(char *str, char c)
+void	ft_init_join(t_data *data, t_room *room)
 {
-	int	i;
-	int	count;
+	int y;
+	int len;
+	char	**map;
+	int		indexa;
+	int		indexb;
 
-	count = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-
-int		ft_len_to_c(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-
-void	ft_print_struct(t_room *room, int nb)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb)
-	{
-		printf("ROOM[%d]\n", i);
-		printf("Name =%s\n", room[i].name);
-		printf("Start_end =%d\n", room[i].start_end);
-		printf("x = %d y = %d\n", room[i].x, room[i].y);
-		printf("\n");
-		i++;
-	}
-}
-
-int		ft_index_for(char *str, t_room *room, int nbrroom)
-{
-	int		a;
-	int		len;
-	int		lenstr;
-
-	lenstr = ft_strlen(str);
-	len = 0;
-	a = 0;
-	while (a < nbrroom)
-	{
-		len = ft_strlen(room[a].name);
-		if (len == lenstr)
-			if (ft_strncmp(room[a].name, str, lenstr) == 0)
-				return(a);
-		a++;
-	}
-	free(str);
-	return (-1);
-}
-
-int		ft_init_img(t_room *room, t_data *data)
-{
-	int	i;
-	int	x;
-	int	y;
-
-	i = 0;
-	x = 0;
+	map = data->map;
 	y = 0;
-	data->img = mlx_new_image(data->mlx, IMG_X, IMG_Y);
-	data->img_ptr = (int *)mlx_get_data_addr(data->img, &i, &i, &i);
-	while (y < 20)
+	while (nbr_space(map[y], '-') != 1 || map[y][0] == '#')
+		y++;
+	while (map[y][0] != 'L' && map[y])
 	{
-		x = 0;
-		while (x < 20)
+		if (map[y][0] != '#')
 		{
-			data->img_ptr[y * IMG_X + x] = 0xFFFFFF;
-			x++;
+			len = ft_len_to_c(map[y], '-');
+			indexa = ft_index_for(ft_strndup(map[y], len), room, data->room);
+			indexb = ft_index_for(ft_strdup(map[y] + len + 1), room, data->room);
+			printf("indexa = %d -- indexb = %d\n", indexa, indexb);
+			data->xstart = data->zm + room[indexa].x * data->zm;
+			data->ystart = data->zm2 + room[indexa].y * data->zm2;
+			ft_tracertrait(data, (data->zm + room[indexb].x * data->zm), (data->zm2 + room[indexb].y * data->zm2));
 		}
 		y++;
 	}
-	while (i < data->nbroom)
-	{
-		room[i].img = data->img;
-		room[i].img_ptr = data->img_ptr;
-		i++;
-	}
-	return (0);
+	mlx_put_image_to_window(data->mlx, data->win, data->img4, (SCREEN_X / (data->room * SIZE)) / 2,  (SCREEN_Y / (data->room * SIZE)) / 2);
+	printf ("first join %d\n", data->x_extrem / SIZE);
 }
 
-int		deal_key(int key, t_data *data)
-{
-	printf("%d\n", key);
-	if (key == KEY_ESC)
-	{
-		mlx_destroy_image(data->mlx, data->img);
-		mlx_destroy_window(data->mlx, data->win);
-		exit(0);
-	}
-	return (0);
-}
 
-/*int		mouse_hook(int button, int x, int y, t_data *data)
+void	ft_init_data(t_data *data)
 {
-	return (0);
-}*/
-
-int		ft_load(t_data *data)
-{
-	mlx_key_hook(data->win, deal_key, data);
-//	mlx_mouse_hook(data->win, mouse_hook, data);
-	return (0);
-}
-
-int		ft_first_render(t_room *room, t_data *data)
-{
-	int	y;
-	int	x;
-	int	i;
-
-	i = 0;
-	x = 0;
-	y = 0;
-	while (i < data->nbroom)
-	{
-		mlx_put_image_to_window(data->mlx, data->win, room[i].img, room[i].y * 10, room[i].x * 10);
-		mlx_string_put(data->mlx, data->win, room[i].y * 10, room[i].x * 10, 0xFF0000, room[i].name);
-		i++;
-	}
-	return (0);
+	data->room = 0;
+	data->x_extrem= 0;
+	data->y_extrem= 0;
 }
 
 int main(void)
 {
 	t_data	data;
-	t_room	*room;
 
+
+	data.room = 0;
+	ft_init_data(&data);
 	if ((ft_init(&data) == -1))
 		return (-1);
-	room = ft_init_room(&data);
-//	ft_init_room_links(room, &data); non utile car plus smart
-	ft_print_struct(room, data.nbroom);
-	ft_init_img(room, &data);
-	ft_first_render(room, &data);
-	ft_load(&data);
-	mlx_loop(data.mlx);
-	return (0);
+	return 0;
 }
