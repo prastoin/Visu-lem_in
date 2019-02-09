@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:24:57 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 02:40:22 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 05:07:16 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct		s_ant
 	int		curr;
 	int		previous;
 	int		coup;
+	int		i;
 }					t_ant;
 
 typedef struct		s_room
@@ -69,6 +70,7 @@ typedef struct		s_data
 	void	*img5;
 	int		*img_ptr5;
 
+	int		i;
 	char	**map;
 	int		room;
 	int		step1;
@@ -99,6 +101,7 @@ char		**ft_read(void);
 int	deal_key(int key, t_data *data);
 void	ft_init_join(t_data *data, t_room *room);
 int			nbr_space(char *str, char c);
+int			ft_inv_play(t_data *data);
 int			ft_play(t_data *data);
 t_ant	*ft_init_ant(t_data *data, t_room *room);
 int		ft_index_for_links(char *str, t_room *room, int nbrroom, int len);

@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 03:00:42 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 04:54:49 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,15 @@ static int		ft_tracertrait(t_data *data, int x, int y)
 
 int	deal_key(int key, t_data *data)
 {
-	if (key == KEY_SPACE)
+	static int i;
+
+	if (key == KEY_RIGHT)
+	{
 		ft_play(data);
+		printf ("i2 = %d\n", i);
+	}
+	if (key == KEY_LEFT)
+		ft_inv_play(data);
 	if (key == KEY_ESC)
 		exit (0);
 	(void)data;
