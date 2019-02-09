@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/08 23:57:22 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 01:04:59 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,9 @@ static int		ft_tracertrait(t_data *data, int x, int y)
 
 int	deal_key(int key, t_data *data)
 {
-	/*	if (key == KEY_CTRL)
-		fdf->isoparr = (fdf->isoparr == 1 ? 0 : 1);
-		if (key == KEY_LESS)
-		fdf->zoom -= 5;
-		if (key == KEY_PLUS)
-		fdf->zoom += 5;
-		if (key == KEY_UP)
-		fdf->position_y += 15;
-		if (key == KEY_DOWN)
-		fdf->position_y -= 15;
-		if (key == KEY_RIGHT)
-		fdf->position_x += 15;
-		if (key == KEY_LEFT)
-		fdf->position_x -= 15;
-		if (key == KEY_NUM6)
-		fdf->hauteur++;
-		if (key == KEY_NUM3)
-		fdf->hauteur--;
-		mlx_destroy_image(fdf->mlx, fdf->img); */
-	//	algo(fdf, fdf->ab, fdf->ord);
 	if (key == KEY_SPACE)
+		ft_play(data);
+	if (key == KEY_ESC)
 		exit (0);
 	(void)data;
 	return (0);
@@ -134,7 +116,6 @@ void	ft_init_join(t_data *data, t_room *room)
 	printf ("first join %d\n", data->x_extrem / SIZE);
 }
 
-
 void	ft_init_data(t_data *data)
 {
 	data->room = 0;
@@ -145,11 +126,18 @@ void	ft_init_data(t_data *data)
 int main(void)
 {
 	t_data	data;
-
+	t_room	*room;
+	t_ant	*ant;
 
 	data.room = 0;
 	ft_init_data(&data);
-	if ((ft_init(&data) == -1))
+	if (!(room = ft_init(&data)))
 		return (-1);
+	if (!(ant = ft_init_ant(&data, room)))
+		return (-1);
+	data.ant = ant;
+	data.room2 = room;
+	mlx_key_hook(data.win, deal_key, &data);
+	mlx_loop(data.mlx);
 	return 0;
 }

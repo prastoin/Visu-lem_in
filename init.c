@@ -6,7 +6,7 @@
 /*   By: fbecerri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 23:14:53 by fbecerri          #+#    #+#             */
-/*   Updated: 2019/02/08 23:46:13 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 01:45:37 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		ft_fill_room(t_data *data, t_room *room)
 	i = 0;
 	while (data->map[i][0] == '#')
 		i++;
+	data->fourmis = ft_atoi(data->map[i]);
 	i++;
 	cmt = 0;
 	while (cmt < data->room)
@@ -133,23 +134,22 @@ void	ft_init_sqare(t_data *data, t_room *room)
 	printf ("i = %d\n", i);
 }
 
-int	ft_init(t_data *data)
+t_room			*ft_init(t_data *data)
 {
 	int k;
 	t_room *room;
 
 	k = -1;
 	if (!(data->map = ft_read()))
-		return (-1);
+		return (NULL);
 	//	while (data->map[++k])
 	//		printf("map = %s\n", data->map[k]);
 	if (!(room =ft_init_complete(data)))
-		return (-1);
+		return (NULL);
 	if (!(data->mlx = mlx_init()))
-		return (-1);
+		return (NULL);
 	if (!(data->win = mlx_new_window(data->mlx, SCREEN_X, SCREEN_Y, "Visu lem_in fbecerri prastoin")))
-		return (-1);
-	mlx_key_hook(data->win, deal_key, data);
+		return (NULL);
 	data->zm = SCREEN_X / (data->x_extrem + 5);
 	data->zm2 = SCREEN_X / (data->y_extrem + 5);
 	data->img = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
@@ -162,7 +162,6 @@ int	ft_init(t_data *data)
 	data->img_ptr4 = (int *)mlx_get_data_addr(data->img4, &k, &k, &k);
 	ft_init_join(data, room);
 	ft_init_sqare(data, room);
-	mlx_loop(data->mlx);
-	return (0);
+	return (room);
 }
 
