@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:24:57 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 01:41:05 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 02:40:22 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct		s_data
 	int		*img_ptr3;
 	void	*img4;
 	int		*img_ptr4;
+	void	*img5;
+	int		*img_ptr5;
 
 	char	**map;
 	int		room;

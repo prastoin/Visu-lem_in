@@ -6,7 +6,7 @@
 /*   By: fbecerri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 23:19:49 by fbecerri          #+#    #+#             */
-/*   Updated: 2019/02/09 01:51:25 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 02:13:02 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		ft_len_to_c(char *str, char c)
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
-	printf ("len to c = %d\n", i);
+//	printf ("len to c = %d\n", i);
 	return (i);
 }
 

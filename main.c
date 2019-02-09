@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 01:04:59 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 03:00:42 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	ft_init_join(t_data *data, t_room *room)
 			len = ft_len_to_c(map[y], '-');
 			indexa = ft_index_for(ft_strndup(map[y], len), room, data->room);
 			indexb = ft_index_for(ft_strdup(map[y] + len + 1), room, data->room);
+			printf("map[%d] = %s\n", y, map[y]);
 			printf("indexa = %d -- indexb = %d\n", indexa, indexb);
 			data->xstart = data->zm + room[indexa].x * data->zm;
 			data->ystart = data->zm2 + room[indexa].y * data->zm2;

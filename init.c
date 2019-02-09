@@ -6,7 +6,7 @@
 /*   By: fbecerri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 23:14:53 by fbecerri          #+#    #+#             */
-/*   Updated: 2019/02/09 01:45:37 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/09 02:54:29 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		ft_fill_room(t_data *data, t_room *room)
 	i = 0;
 	while (data->map[i][0] == '#')
 		i++;
+	printf ("%s\n", data->map[i]);
 	data->fourmis = ft_atoi(data->map[i]);
 	i++;
 	cmt = 0;
@@ -69,6 +70,7 @@ int		ft_fill_room(t_data *data, t_room *room)
 	}
 	//	room[start_end[0]].name = ft_strdup("START");
 	//	room[start_end[1]].name = ft_strdup("END");
+	printf("start_end = %d\n", start_end[0]);
 	room[start_end[0]].start_end = 1;
 	room[start_end[1]].start_end = 2;
 	//	ft_print_struc(room, data->room);
@@ -106,6 +108,7 @@ void	ft_init_sqare(t_data *data, t_room *room)
 			data->img_ptr[y * (SCREEN_X / (data->room * SIZE)) + x] = 0xFF0000;
 			data->img_ptr2[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x00FF00;
 			data->img_ptr3[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x0000FF;
+			data->img_ptr5[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x009933;
 			x++;
 		}
 		y++;
@@ -160,6 +163,8 @@ t_room			*ft_init(t_data *data)
 	data->img_ptr3 = (int *)mlx_get_data_addr(data->img3, &k, &k, &k);
 	data->img4 = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
 	data->img_ptr4 = (int *)mlx_get_data_addr(data->img4, &k, &k, &k);
+	data->img5 = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
+	data->img_ptr5 = (int *)mlx_get_data_addr(data->img5, &k, &k, &k);
 	ft_init_join(data, room);
 	ft_init_sqare(data, room);
 	return (room);
