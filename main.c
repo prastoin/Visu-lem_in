@@ -6,14 +6,14 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/11 11:10:06 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/09 04:54:49 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visu.h"
 
 
-static int		ft_tracertrait(t_data *data, int x, int y)
+int		ft_tracertrait(t_data *data, int x, int y)
 {
 	const int	x_inc = data->xstart < x ? 1 : -1;
 	const int	y_inc = data->ystart < y ? 1 : -1;
@@ -27,7 +27,7 @@ static int		ft_tracertrait(t_data *data, int x, int y)
 		if (data->ystart >= 0 && data->ystart < SCREEN_Y &&
 				y < SCREEN_Y && y >= 0 && data->xstart >= 0 &&
 				data->xstart < SCREEN_X && x < SCREEN_X && x > 0)
-			data->img_ptr4[data->ystart * SCREEN_X + data->xstart] = 0xFFFFFF;
+			data->img_ptr2[data->ystart * SCREEN_X + data->xstart] = 0xFFFFFF;
 		if ((e[1] = e[0]) > -dx)
 		{
 			e[0] -= dy;
@@ -44,14 +44,17 @@ static int		ft_tracertrait(t_data *data, int x, int y)
 
 int	deal_key(int key, t_data *data)
 {
-	if (key == KEY_RIGHT)
+	if (key == KEY_RIGHT && data->oto == 0)
 		ft_play(data);
-	if (key == KEY_LEFT)
+	if (key == KEY_LEFT && data->oto == 0)
 		ft_inv_play(data);
-	if (key == KEY_SPACE)
-		data->oto = 1;
 	if (key == KEY_ESC)
 		exit (0);
+	if (key == KEY_SPACE)
+	{
+		data->time = time(NULL);
+		data->oto = data->oto == 0 ? 1 : 0;
+	}
 	(void)data;
 	return (0);
 }
@@ -117,13 +120,15 @@ void	ft_init_join(t_data *data, t_room *room)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img4, (SCREEN_X / (data->room * SIZE)) / 2,  (SCREEN_Y / (data->room * SIZE)) / 2);
+	mlx_put_image_to_window(data->mlx, data->win, data->img2, 0,  0);
 	printf ("first join %d\n", data->x_extrem / SIZE);
 }
 
 int		auto_play(t_data *data)
 {
-	if (data->time != time(NULL)&& data->oto == 1)
+	mlx_string_put(data->mlx, data->win, data->xpos[0] - 22, data->ypos[0] - 10, 0xFFFFFF, "START");
+	mlx_string_put(data->mlx, data->win, data->xpos[1] - 14, data->ypos[1] - 10, 0xFFFFFF, "END");
+	if (data->time != time(NULL) && data->oto == 1)
 	{
 		ft_play(data);
 		data->time = time(NULL);
@@ -137,6 +142,8 @@ void	ft_init_data(t_data *data)
 	data->x_extrem= 0;
 	data->y_extrem= 0;
 	data->time = time(NULL);
+	data->oto = 0;
+	data->room = 0;
 }
 
 int main(void)
@@ -145,8 +152,6 @@ int main(void)
 	t_room	*room;
 	t_ant	*ant;
 
-	data.oto = 0;
-	data.room = 0;
 	ft_init_data(&data);
 	if (!(room = ft_init(&data)))
 		return (-1);

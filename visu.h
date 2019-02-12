@@ -64,12 +64,6 @@ typedef struct		s_data
 	int		*img_ptr;
 	void	*img2;
 	int		*img_ptr2;
-	void	*img3;
-	int		*img_ptr3;
-	void	*img4;
-	int		*img_ptr4;
-	void	*img5;
-	int		*img_ptr5;
 
 	int		i;
 	char	**map;

@@ -91,50 +91,58 @@ t_room	*ft_init_complete(t_data *data)
 	return (room);
 }
 
+void	ft_circle(int x, int y, int rayon, t_data *data, int color)
+{
+	int x2;
+	int y2;
+
+	y2 = -rayon;
+	while (y2 < rayon)
+	{
+		x2 = -rayon;
+		while (x2 < rayon)
+		{
+			if (((x2 / (double)rayon) * (x2 / (double)rayon) + (y2 / (double)rayon) * (y2 / (double)rayon)) <= 1)
+			{
+				data->img_ptr2[(y2 + y) * (SCREEN_X) + (x2 + x)] = color;
+				data->img_ptr[(y2 + y) * (SCREEN_X) + (x2 + x)] = color;
+			}
+			x2++;
+		}
+		y2++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img2, 0, 0);
+/*	mlx_pixel_put(data->mlx, data->win, x, y, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x + 1, y, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x - 1, y, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x, y + 1, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x + 1, y + 1, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x - 1, y + 1, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x, y - 1, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x + 1, y - 1, 0xFFFF00);
+	mlx_pixel_put(data->mlx, data->win, x - 1, y - 1, 0xFFFF00);*/
+}
+
 void	ft_init_sqare(t_data *data, t_room *room)
 {
 	int x;
 	int y;
-	int zm;
-	int zm2;
 	int i;
 
-	y = 0;
-	while (y < SCREEN_Y / (data->room* SIZE))
-	{
-		x = 0;
-		while (x < SCREEN_X / (data->room * SIZE))
-		{
-			data->img_ptr[y * (SCREEN_X / (data->room * SIZE)) + x] = 0xFF0000;
-			data->img_ptr2[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x00FF00;
-			data->img_ptr3[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x0000FF;
-			data->img_ptr5[y * (SCREEN_X / (data->room * SIZE)) + x] = 0x009933;
-			x++;
-		}
-		y++;
-	}
 	i = 0;
-	zm = SCREEN_X / (data->x_extrem + 5);
-	zm2 = SCREEN_X / (data->y_extrem + 5);
-
 	while (i < data->room)
 	{
-		x = zm + room[i].x * zm;
-		y = zm2 + room[i].y * zm2;
+		x = data->zm + room[i].x * data->zm;
+		y = data->zm2 + room[i].y * data->zm2;
 		printf ("room[%d] x= %d y= %d\n", i, x, y);
 		if (room[i].start_end == 0)
-		{
-			mlx_put_image_to_window(data->mlx, data->win, data->img, x, y);
-			mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
-		}
+			ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0xFFFFFF);
+		else if (room[i].start_end == 1)
+			ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0x0000FF);
 		else
-		{
-			mlx_put_image_to_window(data->mlx, data->win, data->img3, x, y);
-			mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
-		}
+			ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0xFF0000);
 		i++;
 	}
-	printf ("i = %d\n", i);
 }
 
 t_room			*ft_init(t_data *data)
@@ -154,19 +162,13 @@ t_room			*ft_init(t_data *data)
 	if (!(data->win = mlx_new_window(data->mlx, SCREEN_X, SCREEN_Y, "Visu lem_in fbecerri prastoin")))
 		return (NULL);
 	data->zm = SCREEN_X / (data->x_extrem + 5);
-	data->zm2 = SCREEN_X / (data->y_extrem + 5);
-	data->img = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
+	data->zm2 = SCREEN_Y / (data->y_extrem + 5);
+	printf("data zm =%d\n", data->zm);
+	data->img = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
 	data->img_ptr = (int *)mlx_get_data_addr(data->img, &k, &k, &k);
-	data->img2 = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
+	data->img2 = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
 	data->img_ptr2 = (int *)mlx_get_data_addr(data->img2, &k, &k, &k);
-	data->img3 = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
-	data->img_ptr3 = (int *)mlx_get_data_addr(data->img3, &k, &k, &k);
-	data->img4 = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
-	data->img_ptr4 = (int *)mlx_get_data_addr(data->img4, &k, &k, &k);
-	data->img5 = mlx_new_image(data->mlx, SCREEN_X / (data->room * SIZE), SCREEN_X / (data->room * SIZE));
-	data->img_ptr5 = (int *)mlx_get_data_addr(data->img5, &k, &k, &k);
 	ft_init_join(data, room);
 	ft_init_sqare(data, room);
 	return (room);
 }
-

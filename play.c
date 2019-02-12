@@ -25,6 +25,11 @@ int		ft_get_index_start(t_room *room, t_data *data)
 			data->index_end = i;
 		i++;
 	}
+	printf("data zm = %d\n", data->zm);
+	data->xpos[0] = data->zm + room[data->index_start].x * data->zm;
+	data->xpos[1] = data->zm + room[data->index_end].x * data->zm;
+	data->ypos[0] = data->zm2 + room[data->index_start].y * data->zm2;
+	data->ypos[1] = data->zm2 + room[data->index_end].y * data->zm2;
 	return (0);
 }
 
@@ -55,8 +60,9 @@ void	ft_put_red_square(t_data *data, t_room *room, int i)
 
 	x = data->zm + room[i].x * data->zm;
 	y = data->zm2 + room[i].y * data->zm2;
-	mlx_put_image_to_window(data->mlx, data->win, data->img, x, y);
-	mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
+	ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0xFFFFFF);
+//	mlx_put_image_to_window(data->mlx, data->win, data->img, x, y);
+//	mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
 }
 
 void	ft_put_green_square(t_data *data, t_room *room, int i, t_ant ant)
@@ -71,11 +77,13 @@ void	ft_put_green_square(t_data *data, t_room *room, int i, t_ant ant)
 	x = data->zm + room[i].x * data->zm;
 	y = data->zm2 + room[i].y * data->zm2;
 	if (ant.coup == 1)
-		mlx_put_image_to_window(data->mlx, data->win, data->img2, x, y);
+		ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0x00FF00);
+//		mlx_put_image_to_window(data->mlx, data->win, data->img2, x, y);
 	else
-		mlx_put_image_to_window(data->mlx, data->win, data->img5, x, y);
-	mlx_string_put(data->mlx, data->win, x + dx, y + dy, 0xFFFFFF, ft_itoa(ant.i));
-	mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
+		ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0x009933);
+//		mlx_put_image_to_window(data->mlx, data->win, data->img5, x, y);
+//	mlx_string_put(data->mlx, data->win, x + dx, y + dy, 0xFFFFFF, ft_itoa(ant.i));
+//	mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
 }
 
 int		ft_play_cut(t_room *room, t_data *data, t_ant *ant, int y)
