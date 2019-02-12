@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 04:54:49 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/11 11:10:06 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,12 @@ static int		ft_tracertrait(t_data *data, int x, int y)
 
 int	deal_key(int key, t_data *data)
 {
-	static int i;
-
 	if (key == KEY_RIGHT)
-	{
 		ft_play(data);
-		printf ("i2 = %d\n", i);
-	}
 	if (key == KEY_LEFT)
 		ft_inv_play(data);
+	if (key == KEY_SPACE)
+		data->oto = 1;
 	if (key == KEY_ESC)
 		exit (0);
 	(void)data;
@@ -124,11 +121,22 @@ void	ft_init_join(t_data *data, t_room *room)
 	printf ("first join %d\n", data->x_extrem / SIZE);
 }
 
+int		auto_play(t_data *data)
+{
+	if (data->time != time(NULL)&& data->oto == 1)
+	{
+		ft_play(data);
+		data->time = time(NULL);
+	}
+	return (0);
+}
+
 void	ft_init_data(t_data *data)
 {
 	data->room = 0;
 	data->x_extrem= 0;
 	data->y_extrem= 0;
+	data->time = time(NULL);
 }
 
 int main(void)
@@ -137,6 +145,7 @@ int main(void)
 	t_room	*room;
 	t_ant	*ant;
 
+	data.oto = 0;
 	data.room = 0;
 	ft_init_data(&data);
 	if (!(room = ft_init(&data)))
@@ -146,6 +155,7 @@ int main(void)
 	data.ant = ant;
 	data.room2 = room;
 	mlx_key_hook(data.win, deal_key, &data);
+	mlx_loop_hook(data.mlx, auto_play, &data);
 	mlx_loop(data.mlx);
 	return 0;
 }

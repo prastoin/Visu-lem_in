@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:24:57 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 05:07:16 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/11 11:10:13 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <mlx.h>
 # include "libft/libft.h"
+#include <time.h>
 
 #include <stdio.h>
 
@@ -85,6 +86,8 @@ typedef struct		s_data
 	int		fourmis;
 	t_room	*room2;
 	t_ant	*ant;
+	int		oto;
+	time_t  time;
 }					t_data;
 
 
