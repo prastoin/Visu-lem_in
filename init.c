@@ -6,7 +6,7 @@
 /*   By: fbecerri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 23:14:53 by fbecerri          #+#    #+#             */
-/*   Updated: 2019/02/09 02:54:29 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/12 22:47:47 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	ft_init_sqare(t_data *data, t_room *room)
 	}
 }
 
-t_room			*ft_init(t_data *data)
+t_room			*ft_init(t_data *data, int argc)
 {
 	int k;
 	t_room *room;
@@ -157,18 +157,24 @@ t_room			*ft_init(t_data *data)
 	//		printf("map = %s\n", data->map[k]);
 	if (!(room =ft_init_complete(data)))
 		return (NULL);
-	if (!(data->mlx = mlx_init()))
-		return (NULL);
-	if (!(data->win = mlx_new_window(data->mlx, SCREEN_X, SCREEN_Y, "Visu lem_in fbecerri prastoin")))
-		return (NULL);
+	if (argc == 1)
+	{
+		if (!(data->mlx = mlx_init()))
+			return (NULL);
+		if (!(data->win = mlx_new_window(data->mlx, SCREEN_X, SCREEN_Y, "Visu lem_in fbecerri prastoin")))
+				return (NULL);
+	}
 	data->zm = SCREEN_X / (data->x_extrem + 5);
 	data->zm2 = SCREEN_Y / (data->y_extrem + 5);
 	printf("data zm =%d\n", data->zm);
+	if (argc == 1)
+	{
 	data->img = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
 	data->img_ptr = (int *)mlx_get_data_addr(data->img, &k, &k, &k);
 	data->img2 = mlx_new_image(data->mlx, SCREEN_X, SCREEN_Y);
 	data->img_ptr2 = (int *)mlx_get_data_addr(data->img2, &k, &k, &k);
 	ft_init_join(data, room);
 	ft_init_sqare(data, room);
+	}
 	return (room);
 }

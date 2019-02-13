@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:23:37 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/09 04:54:49 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/13 02:05:07 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,19 +146,25 @@ void	ft_init_data(t_data *data)
 	data->room = 0;
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	t_data	data;
 	t_room	*room;
 	t_ant	*ant;
 
+	(void)argv;
 	ft_init_data(&data);
-	if (!(room = ft_init(&data)))
+	if (!(room = ft_init(&data, argc)))
 		return (-1);
 	if (!(ant = ft_init_ant(&data, room)))
 		return (-1);
 	data.ant = ant;
 	data.room2 = room;
+	if (argc > 1)
+	{
+		ft_shell_visu(&data, room, ant);
+		exit(0);
+	}
 	mlx_key_hook(data.win, deal_key, &data);
 	mlx_loop_hook(data.mlx, auto_play, &data);
 	mlx_loop(data.mlx);

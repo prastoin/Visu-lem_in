@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:24:57 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/11 11:10:13 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/13 00:44:27 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct		s_room
 	int		y;
 	int		start_end;
 	int		slot;
+	int		*index;
 }					t_room;
 
 typedef struct		s_data
@@ -82,14 +83,22 @@ typedef struct		s_data
 	t_ant	*ant;
 	int		oto;
 	time_t  time;
+	int		xpos[2];
+	int		ypos[2];
+
+	int		x_max;
+	int		y_max;
+	char	**jeu;
+	int		*len;
 }					t_data;
 
-
+int		ft_shell_visu(t_data *data, t_room *room, t_ant *ant);
+void	ft_circle(int x, int y, int rayon, t_data *data, int color);
 int		ft_fill_info(char *str, t_room *room, t_data *data);
 int		ft_fill_room(t_data *data, t_room *room);
 t_room	*ft_init_complete(t_data *data);
 void	ft_init_sqare(t_data *data, t_room *room);
-t_room	*ft_init(t_data *data);
+t_room	*ft_init(t_data *data, int argc);
 int		ft_index_for(char *str, t_room *room, int nbrroom);
 int		ft_len_to_c(char *str, char c);
 void	ft_print_struc(t_room *room, int nbroom);
