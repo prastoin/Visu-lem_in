@@ -6,11 +6,86 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 22:07:36 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/13 03:33:43 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/13 05:45:54 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visu.h"
+
+int		ft_shell_tracertrait(t_data *data, int xstart, int ystart, int x1, int y1, char **jeu)
+{
+	const int	x_inc = xstart < x1 ? 1 : -1;
+	const int	y_inc = ystart < y1 ? 1 : -1;
+	const int	dx = x1 > xstart ? x1 - xstart : xstart - x1;
+	const int	dy = y1 >ystart ? y1 - ystart : ystart - y1;
+	int			e[2];
+	int			cpt;
+	int			save_x;
+	int			save_y;
+	int			verif;
+
+	verif = 0;
+	e[0] = dx > dy ? dx / 2 : -dy / 2;
+	save_x = xstart;
+	save_y = ystart;
+	while (xstart != x1 || ystart != y1)
+	{
+		printf("xstart %d et ystart %d ymax =%d\n", x1, y1, data->x_max * 2);
+		if (ystart >= 0 && ystart < (data->y_max * 2) &&
+				y1 < (data->y_max * 2) && y1 >= 0 && xstart >= 0 &&
+				xstart < (data->x_max * 4) && x1 < (data->x_max * 4) && x1 > 0)
+		{
+			printf("je trace\n");
+			if (jeu[ystart][xstart] == ' ')
+			{
+				if (save_y != ystart)
+				{
+					if (save_x == xstart)
+						jeu[ystart][xstart] = '|';
+					if (save_y < ystart && save_x < xstart)
+						jeu[ystart][xstart] = '\\';
+					if (save_y < ystart && save_x > xstart)
+						jeu[ystart][xstart] = '/';
+					if (save_y > ystart && save_x > xstart)
+						jeu[ystart][xstart] = '\\';
+					if (save_y > ystart && save_x < xstart)
+						jeu[ystart][xstart] = '/';
+					verif = 1;
+				}
+				else
+				{
+					if (verif != 1)
+					{
+						if (xstart < save_x)
+							jeu[ystart][xstart] = '=';
+						if (xstart > save_x)
+							jeu[ystart][xstart] = '=';
+//						if (jeu[ystart + 1][xstart] == ' ')
+//						{
+//							jeu[ystart + 1][xstart] = '_';
+//						}
+					}
+					verif = 0;
+				}
+				save_x = xstart;
+				save_y = ystart;
+			}
+		}
+		if ((e[1] = e[0]) > -dx)
+		{
+			e[0] -= dy;
+			cpt = -1;
+			xstart += x_inc;
+		}
+		if (e[1] < dy)
+		{
+			cpt = 1;
+			e[0] += dx;
+			ystart += y_inc;
+		}
+	}
+	return (0);
+}
 
 void	ft_get_coord_max(t_room *room, t_data *data, int nbroom)
 {
@@ -193,7 +268,7 @@ void		ft_place_links(char **jeu, t_room *room, t_data *data, int indexa, int ind
 	while (x != x1 && jeu[y][x])
 	{
 		if (jeu[y][x] == ' ')
-			jeu[y][x] = cpt == 1 ? '_' : '-';
+			jeu[y][x] = cpt == 1 ? '-' : '_';
 			if (y == y1 - 1 || y == y1 + 1 || x == x1 - 1 || x == x1 + 1)
 			if (ft_check_corner(jeu, x, y, data) == 0 && jeu[y][x] == '-')
 				jeu[y][x] = ' ';
@@ -228,7 +303,7 @@ int		ft_get_links(t_room *room, t_data *data)
 			indexb = ft_index_for(ft_strdup(data->map[i] + len + 1), room, data->room);
 			printf("indexa %s indexb %s\n", room[indexa].name , room[indexb].name);
 			if (indexa != -1 && indexb != -1)
-				ft_place_links(data->jeu, room, data, indexa, indexb);
+				ft_shell_tracertrait(data, room[indexa].x * 2 + 1, room[indexa].y * 2, room[indexb].x * 2 + 1, room[indexb].y * 2, data->jeu);
 		}
 		i++;
 	}
