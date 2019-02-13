@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 22:07:36 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/13 05:45:54 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/13 06:03:01 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,11 @@ int		ft_shell_tracertrait(t_data *data, int xstart, int ystart, int x1, int y1, 
 					{
 						if (xstart < save_x)
 							jeu[ystart][xstart] = '=';
-						if (xstart > save_x)
-							jeu[ystart][xstart] = '=';
+						else if (xstart > save_x)
+						{
+							if (jeu[ystart + y_inc][xstart] == ' ')
+							jeu[ystart + y_inc][xstart] = '_';
+						}
 //						if (jeu[ystart + 1][xstart] == ' ')
 //						{
 //							jeu[ystart + 1][xstart] = '_';
