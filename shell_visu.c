@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 22:07:36 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/13 06:03:01 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/13 06:10:58 by prastoin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int		ft_shell_tracertrait(t_data *data, int xstart, int ystart, int x1, int y1, 
 	while (xstart != x1 || ystart != y1)
 	{
 		printf("xstart %d et ystart %d ymax =%d\n", x1, y1, data->x_max * 2);
-		if (ystart >= 0 && ystart < (data->y_max * 2) &&
-				y1 < (data->y_max * 2) && y1 >= 0 && xstart >= 0 &&
+		if (ystart >= 0 && ystart < (data->y_max * 4) &&
+				y1 < (data->y_max * 4) && y1 >= 0 && xstart >= 0 &&
 				xstart < (data->x_max * 4) && x1 < (data->x_max * 4) && x1 > 0)
 		{
 			printf("je trace\n");
