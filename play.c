@@ -6,7 +6,7 @@
 /*   By: fbecerri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 00:47:31 by fbecerri          #+#    #+#             */
-/*   Updated: 2019/02/09 05:14:22 by fbecerri         ###   ########.fr       */
+/*   Updated: 2019/02/19 18:02:52 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,18 @@ void	ft_put_green_square(t_data *data, t_room *room, int i, t_ant ant)
 	int y;
 	int dx;
 	int dy;
+	static int color;
 
+	(void)ant;
+	if (ant.coup == 1)
+		color = 0x00FF00;
+	else
+		color = 0x009900;
 	dx = (SCREEN_X / (data->room * SIZE)) / 2;
 	dy = (SCREEN_Y / (data->room * SIZE)) / 2;
 	x = data->zm + room[i].x * data->zm;
 	y = data->zm2 + room[i].y * data->zm2;
-	if (ant.coup == 1)
-		ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0x00FF00);
-//		mlx_put_image_to_window(data->mlx, data->win, data->img2, x, y);
-	else
-		ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, 0x009933);
-//		mlx_put_image_to_window(data->mlx, data->win, data->img5, x, y);
-//	mlx_string_put(data->mlx, data->win, x + dx, y + dy, 0xFFFFFF, ft_itoa(ant.i));
-//	mlx_string_put(data->mlx, data->win, x, y, 0xFFFFFF, room[i].name);
+	ft_circle(x, y, SCREEN_X / (data->room * SIZE * 2), data, color);
 }
 
 int		ft_play_cut(t_room *room, t_data *data, t_ant *ant, int y)

@@ -6,7 +6,7 @@
 /*   By: prastoin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 09:24:57 by prastoin          #+#    #+#             */
-/*   Updated: 2019/02/13 00:44:27 by prastoin         ###   ########.fr       */
+/*   Updated: 2019/02/19 03:10:16 by fbecerri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct		s_data
 int		ft_shell_visu(t_data *data, t_room *room, t_ant *ant);
 void	ft_circle(int x, int y, int rayon, t_data *data, int color);
 int		ft_fill_info(char *str, t_room *room, t_data *data);
-int		ft_fill_room(t_data *data, t_room *room);
+int		ft_fill_room(t_data *data, t_room *room, int i);
 t_room	*ft_init_complete(t_data *data);
 void	ft_init_sqare(t_data *data, t_room *room);
 t_room	*ft_init(t_data *data, int argc);
